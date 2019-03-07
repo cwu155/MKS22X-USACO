@@ -4,7 +4,20 @@ import java.io.*;
 public class USACO{
 
   public static int[][] map;
-  public static int r, c, e, n;
+  public static int r, c, e, n, rows, cols;
+  public static String[] firstLineArray;
+  public static String line;
+
+  public static int[] stringToInt(String input){
+    String[] stringArray = input.split(" ");
+    int[] result = new int[stringArray.length];
+
+    for (int i = 0; i < stringArray.length; i++){
+      result[i] = Integer.parseInt(stringArray[i]);
+    }
+
+    return result;
+  }
 
   public static void readFile(String filename) throws FileNotFoundException, IOException{
     try {
@@ -13,28 +26,31 @@ public class USACO{
 
       BufferedReader brTest = new BufferedReader(new FileReader(filename));
       String firstLine = brTest.readLine();
+      firstLineArray = firstLine.split(" ");
+      r = Integer.parseInt(firstLineArray[0]);
+      c = Integer.parseInt(firstLineArray[1]);
+      e = Integer.parseInt(firstLineArray[2]);
+      n = Integer.parseInt(firstLineArray[3]);
 
-      r = Integer.parseInt(firstLine.substring(0,1));
-      c = Integer.parseInt(firstLine.substring(2,3));
-      //e = Integer.parseInt(firstLine.substring(4,5));
-      //n = Integer.parseInt(firstLine.substring(4,5));
+      inf.nextLine();
+        while(inf.hasNextLine()){
+           line = inf.nextLine();
+           System.out.println(line);
+           rows += 1;
+        }
 
-      //   while(inf.hasNextLine()){
-      //     String line = inf.nextLine();
-      //     rows += 1;
-      //   }
-      //
-      //   maze = new char[rows][];
-      //   rows = 0;
-      //
-      // File text1 = new File(filename);
-      // Scanner inf1 = new Scanner(text1);
-      //
-      //   while(inf1.hasNextLine()){
-      //     String next = inf1.nextLine();
-      //     maze[rows] = next.toCharArray();
-      //     rows += 1;
-      //   }
+        map = new int[rows][];
+        rows = 0;
+
+      File text1 = new File(filename);
+      Scanner inf1 = new Scanner(text1);
+
+      inf1.nextLine();
+         while(inf1.hasNextLine()){
+           String next = inf1.nextLine();
+           map[rows] = stringToInt(next);
+           rows += 1;
+         }
 
       } catch (FileNotFoundException ex){
         System.out.println("Yikes");
@@ -43,9 +59,18 @@ public class USACO{
       }
     }
 
+    public String toString(){
+      String result = "";
+        for (int i = 0; i < map.length; i++){
+          for (int j = 0; j < map[0].length; j++){
+            result += map[i][j];
+          }
+          result += '\n';
+        }
+        return result;
+      }
+
     public static void main(String[] args)throws FileNotFoundException, IOException{
       readFile("makelake.in");
-      System.out.println(r);
-      System.out.println(c);
     }
   }
