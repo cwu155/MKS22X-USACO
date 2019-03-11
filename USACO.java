@@ -9,12 +9,12 @@ public class USACO{
   public static String line;
 
   //Silver variables!
-  public static int[][] pasture;
-  public static int N, M, T, R1, C1, R2, C2;
+  public static int[][] pasture, moveGrid;
+  public static int N, M, T, R1, C1, R2, C2, count;
 
-  //Helper method for reading file.
-  public static int[] stringToInt(String input){
-    String[] stringArray = input.split(" ");
+  //Helper method for reading files.
+  public static int[] stringToInt(String original){
+    String[] stringArray = original.split(" ");
     int[] result = new int[stringArray.length];
 
       for (int i = 0; i < stringArray.length; i++){
@@ -22,6 +22,22 @@ public class USACO{
       }
     return result;
   }
+
+  //Debug purposes.
+  public static String toString(int[][] grid){
+      String result = "";
+      for (int i = 0; i < grid.length; i++){
+          for (int j = 0; j < grid[i].length; j++){
+
+            if (j == grid[i].length - 1){
+              result += grid[i][j] + "\n";
+              } else {
+              result += grid[i][j] + " ";
+              }
+            }
+          }
+        return result;
+      }
 
   //Reads Bronze file, assigns variables.
   public static void readFileBronze(String filename) throws FileNotFoundException, IOException{
@@ -67,22 +83,6 @@ public class USACO{
         System.out.println("Yikes");
       }
   }
-
-  //Debug purposes.
-  public static String toString(int[][] grid){
-      String result = "";
-      for (int i = 0; i < grid.length; i++){
-          for (int j = 0; j < grid[i].length; j++){
-
-            if (j == grid[i].length - 1){
-              result += grid[i][j] + "\n";
-              } else {
-              result += grid[i][j] + " ";
-              }
-            }
-          }
-        return result;
-      }
 
   //Initializes 3x3 cow grid, changes level of pasture after cow stomping.
   public static void changeLevel(int Rs, int Cs, int level, int[][] original){
@@ -163,7 +163,7 @@ public class USACO{
       M = Integer.parseInt(firstLineArray[1]);
       T = Integer.parseInt(firstLineArray[2]);
 
-      //Initializes pasture. Assume 0 for empty space, 1 for a tree.
+      //Initializes pasture. Assume 0 for empty space, -1 for a tree.
       String temp = "";
       pasture = new int[N][M];
       inf.nextLine();
@@ -176,7 +176,7 @@ public class USACO{
               pasture[i][j] = 0;
           }
           if (temp.charAt(j) == '*'){
-              pasture[i][j] = 1;
+              pasture[i][j] = -1;
           }
         }
       }
@@ -194,8 +194,37 @@ public class USACO{
       }
   }
 
+  //Update the cow??
+  public static int[][] updateCow(int[][] original){
+    moveGrid = new int[original.length][original[0].length];
+        for (int i = 0; i < original.length; i++){
+        for (int j = 0; j < original[0].length; j++){
+          if (original[i][j] != -1){
+
+          if (i + 1 < original.length && original[i + 1][j] > 0){ moveGrid[i][j] += original[i + 1][j];}
+          if (i - 1 >= 0 && original[i - 1][j] > 0){ moveGrid[i][j] += original[i - 1][j];}
+          if (j + 1 < original[0].length && original[i][j + 1] > 0){ moveGrid[i][j] += original[i][j + 1];}
+          if (j - 1 >= 0 && original[i][j - 1] > 0){ moveGrid[i][j] += original[i][j - 1];}
+
+          } else {
+            moveGrid[i][j] = -1;
+          }
+        }
+      }
+      return moveGrid;
+    }
+
+  //Full silver method.
+  public static int silver(String filename)throws FileNotFoundException, IOException{
+    readFileSilver(filename);
+    pasture[R1 - 1][C1 - 1] = 1;
+    for(int i = 0; i < T; i++) {
+      pasture = updateCow(pasture);
+    }
+    return pasture[R2 - 1][C2 - 1];
+  }
+
     public static void main(String[] args)throws FileNotFoundException, IOException{
-      readFileSilver("ctravel.1.in");
-      System.out.println(toString(pasture));
+      System.out.println(silver("ctravel.4.in"));
     }
   }
