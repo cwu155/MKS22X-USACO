@@ -6,7 +6,7 @@ public class USACO{
   public static int[][] map;
   public static int[][] cowGrid;
   public static int[][] instructions;
-  public static int r, c, e, n, R_s, C_s;
+  public static int r, c, e, n, R_s, C_s, max;
   public static String line;
 
   //Helper method for reading file.
@@ -65,8 +65,8 @@ public class USACO{
       }
   }
 
-    //Debug purposes.
-    public static String toString(int[][] grid){
+  //Debug purposes.
+  public static String toString(int[][] grid){
       String result = "";
       for (int i = 0; i < grid.length; i++){
           for (int j = 0; j < grid[i].length; j++){
@@ -81,13 +81,47 @@ public class USACO{
         return result;
       }
 
-    //Initializes 3x3 cow grid.
-    public static void initCowGrid(int Rs, int Cs){
-      cowGrid = new int[3][3];
+  //Initializes 3x3 cow grid.
+  public static void changeLevel(int Rs, int Cs, int level, int[][] original){
+    cowGrid = new int[3][3];
+    max = 0;
+
+    //Finds the max number in the 3x3 grid.
+    for (int i = 0; i < 3; i++){
+      for (int j = 0; j < 3; j++){
+        if (max < original[Rs + i][Cs + j]){
+          max = original[Rs + i][Cs + j];
+        }
+      }
     }
 
+    //Changes the depth of the grid.
+    for (int i = 0; i < 3; i++){
+      for (int j = 0; j < 3; j++){
+        if (max - original[Rs + i][Cs + j] <= level){
+          original[Rs + i][Cs + j] = max - level;
+        }
+      }
+    }
+  }
+
+  public static void changeDepth(int e, int[][] original){
+    for (int i = 0; i < original.length; i++){
+      for (int j = 0; j < original[0].length; i++){
+        if (original[i][j] > e){
+          original[i][j] = 1;
+        } else {
+          original[i][j] = e - original[i][j];
+        }
+      }
+    }
+  }
+
+  //REMEMBER TO CHANGE THE RS AND CS BY -1
     public static void main(String[] args)throws FileNotFoundException, IOException{
       readFile("makelake.in");
+      changeLevel(0,3,4,map);
+      changeLevel(0,0,10,map);
       System.out.println(toString(map));
       System.out.println(toString(instructions));
     }
