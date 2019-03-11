@@ -3,11 +3,14 @@ import java.io.*;
 
 public class USACO{
 
-  public static int[][] map;
-  public static int[][] cowGrid;
-  public static int[][] instructions;
+  //Bronze variables!
+  public static int[][] map, cowGrid, instructions;
   public static int r, c, e, n, R_s, C_s, max, aggregate;
   public static String line;
+
+  //Silver variables!
+  public static int[][] pasture;
+  public static int N, M, T, R1, C1, R2, C2;
 
   //Helper method for reading file.
   public static int[] stringToInt(String input){
@@ -20,8 +23,8 @@ public class USACO{
     return result;
   }
 
-  //Reads file, assigns variables.
-  public static void readFile(String filename) throws FileNotFoundException, IOException{
+  //Reads Bronze file, assigns variables.
+  public static void readFileBronze(String filename) throws FileNotFoundException, IOException{
     try {
       //Scanners and readers and everything??
       File text = new File(filename);
@@ -40,7 +43,7 @@ public class USACO{
       //Initializes map.
       map = new int[r][c];
       inf.nextLine();
-      for (int i = 0; i < r; i ++){
+      for (int i = 0; i < r; i++){
         for (int j = 0; j < c; j++) {
           map[i][j] = inf.nextInt();
         }
@@ -129,8 +132,10 @@ public class USACO{
     return (aggregate * 72 * 72);
   }
 
+  //Full bronze method.
   public static int bronze(String filename) throws FileNotFoundException, IOException{
-    readFile(filename);
+    readFileBronze(filename);
+
     for (int i = 0; i < instructions.length; i++){
       R_s = instructions[i][0];
       C_s = instructions[i][1];
@@ -138,19 +143,59 @@ public class USACO{
     }
 
     changeDepth(e, map);
+
     return findVol(map);
   }
 
-  //REMEMBER TO CHANGE THE RS AND CS BY -1
+  //Reads Silver file, assigns variables.
+  public static void readFileSilver(String filename) throws FileNotFoundException, IOException{
+    try {
+      //Scanners and readers and everything??
+      File text = new File(filename);
+      Scanner inf = new Scanner(text);
+      BufferedReader brTest = new BufferedReader(new FileReader(filename));
+      String firstLine = brTest.readLine();
+      String[] firstLineArray = new String[3];
+      firstLineArray = firstLine.split(" ");
+
+      //Determines number of rows, cows, and time.
+      N = Integer.parseInt(firstLineArray[0]);
+      M = Integer.parseInt(firstLineArray[1]);
+      T = Integer.parseInt(firstLineArray[2]);
+
+      //Initializes pasture. Assume 0 for empty space, 1 for a tree.
+      String temp = "";
+      pasture = new int[N][M];
+      inf.nextLine();
+
+      for (int i = 0; i < N; i++){
+        temp = inf.next();
+
+        for (int j = 0; j < M; j++){
+          if (temp.charAt(j) == '.'){
+              pasture[i][j] = 0;
+          }
+          if (temp.charAt(j) == '*'){
+              pasture[i][j] = 1;
+          }
+        }
+      }
+
+      //Determines (R1, C1) and (R2, C2).
+      inf.nextLine();
+      R1 = inf.nextInt(); C1 = inf.nextInt();
+      R2 = inf.nextInt(); C2 = inf.nextInt();
+
+      //Exceptions.
+      } catch (FileNotFoundException ex){
+        System.out.println("Yikes");
+      } catch (IOException ex){
+        System.out.println("Yikes");
+      }
+  }
+
     public static void main(String[] args)throws FileNotFoundException, IOException{
-      // readFile("makelake.in");
-      // changeLevel(0,3,4,map);
-      // changeLevel(0,0,10,map);
-      // changeDepth(e, map);
-      // System.out.println(findVol(map));
-      // System.out.println(toString(map));
-      // System.out.println(toString(instructions));
-      System.out.println(bronze("makelake.in")); //returns 342144
-      System.out.println(bronze("makelake.2.in")); //returns 102762432
+      readFileSilver("ctravel.1.in");
+      System.out.println(toString(pasture));
     }
   }
