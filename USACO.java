@@ -6,7 +6,7 @@ public class USACO{
   public static int[][] map;
   public static int[][] cowGrid;
   public static int[][] instructions;
-  public static int r, c, e, n, R_s, C_s, max;
+  public static int r, c, e, n, R_s, C_s, max, aggregate;
   public static String line;
 
   //Helper method for reading file.
@@ -81,7 +81,7 @@ public class USACO{
         return result;
       }
 
-  //Initializes 3x3 cow grid.
+  //Initializes 3x3 cow grid, changes level of pasture after cow stomping.
   public static void changeLevel(int Rs, int Cs, int level, int[][] original){
     cowGrid = new int[3][3];
     max = 0;
@@ -105,11 +105,12 @@ public class USACO{
     }
   }
 
+  //Changes depth of pasture.
   public static void changeDepth(int e, int[][] original){
     for (int i = 0; i < original.length; i++){
-      for (int j = 0; j < original[0].length; i++){
+      for (int j = 0; j < original[0].length; j++){
         if (original[i][j] > e){
-          original[i][j] = 1;
+          original[i][j] = 0;
         } else {
           original[i][j] = e - original[i][j];
         }
@@ -117,12 +118,38 @@ public class USACO{
     }
   }
 
+  //Calculates final volume.
+  public static int findVol(int[][] original){
+    aggregate = 0;
+    for (int i = 0; i < original.length; i++){
+      for (int j = 0; j < original[0].length; j++){
+        aggregate += original[i][j];
+      }
+    }
+    return (aggregate * 72 * 72);
+  }
+
+  public static int bronze(String filename) throws FileNotFoundException, IOException{
+    readFile(filename);
+    for (int i = 0; i < instructions.length; i++){
+      R_s = instructions[i][0];
+      C_s = instructions[i][1];
+      changeLevel(R_s - 1, C_s - 1, instructions[i][2], map);
+    }
+
+    changeDepth(e, map);
+    return findVol(map);
+  }
+
   //REMEMBER TO CHANGE THE RS AND CS BY -1
     public static void main(String[] args)throws FileNotFoundException, IOException{
-      readFile("makelake.in");
-      changeLevel(0,3,4,map);
-      changeLevel(0,0,10,map);
-      System.out.println(toString(map));
-      System.out.println(toString(instructions));
+      // readFile("makelake.in");
+      // changeLevel(0,3,4,map);
+      // changeLevel(0,0,10,map);
+      // changeDepth(e, map);
+      // System.out.println(findVol(map));
+      // System.out.println(toString(map));
+      // System.out.println(toString(instructions));
+      System.out.println(bronze("makelake.in"));
     }
   }
