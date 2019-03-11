@@ -150,6 +150,7 @@ public class USACO{
       // System.out.println(findVol(map));
       // System.out.println(toString(map));
       // System.out.println(toString(instructions));
-      System.out.println(bronze("makelake.in"));
+      System.out.println(bronze("makelake.in")); //returns 342144
+      System.out.println(bronze("makelake.2.in")); //returns 102762432
     }
   }
