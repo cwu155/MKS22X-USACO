@@ -225,6 +225,9 @@ public class USACO{
   }
 
     public static void main(String[] args)throws FileNotFoundException{
-      System.out.println(silver("ctravel.4.in"));
+      System.out.println(silver("ctravel.1.in")); //1
+      System.out.println(silver("ctravel.2.in")); //74
+      System.out.println(silver("ctravel.3.in")); //6435
+      System.out.println(silver("ctravel.4.in")); //339246
     }
   }
