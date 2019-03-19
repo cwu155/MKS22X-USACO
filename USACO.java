@@ -40,7 +40,7 @@ public class USACO{
       }
 
   //Reads Bronze file, assigns variables.
-  public static void readFileBronze(String filename) throws FileNotFoundException, IOException{
+  public static void readFileBronze(String filename) throws FileNotFoundException{
     try {
       //Scanners and readers and everything??
       File text = new File(filename);
@@ -133,7 +133,7 @@ public class USACO{
   }
 
   //Full bronze method.
-  public static int bronze(String filename) throws FileNotFoundException, IOException{
+  public static int bronze(String filename) throws FileNotFoundException{
     readFileBronze(filename);
 
     for (int i = 0; i < instructions.length; i++){
@@ -148,7 +148,7 @@ public class USACO{
   }
 
   //Reads Silver file, assigns variables.
-  public static void readFileSilver(String filename) throws FileNotFoundException, IOException{
+  public static void readFileSilver(String filename) throws FileNotFoundException{
     try {
       //Scanners and readers and everything??
       File text = new File(filename);
@@ -215,7 +215,7 @@ public class USACO{
     }
 
   //Full silver method.
-  public static int silver(String filename)throws FileNotFoundException, IOException{
+  public static int silver(String filename)throws FileNotFoundException{
     readFileSilver(filename);
     pasture[R1 - 1][C1 - 1] = 1;
     for(int i = 0; i < T; i++) {
@@ -224,7 +224,7 @@ public class USACO{
     return pasture[R2 - 1][C2 - 1];
   }
 
-    public static void main(String[] args)throws FileNotFoundException, IOException{
+    public static void main(String[] args)throws FileNotFoundException{
       System.out.println(silver("ctravel.4.in"));
     }
   }
